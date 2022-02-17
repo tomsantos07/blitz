@@ -9,15 +9,35 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "cadastra-roupas",
+  database: "produtos",
 });
 
 app.use(cors());
 // pra ler os dados do crud no front precisa transformar em json
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  let SQL
+app.post("/register", (req, res) => {
+  const { name } = req.body;
+  const { cost } = req.body;
+  const { category } = req.body;
+  // console.log(name); testei pra ver se tava recebendo os valores e estava :D
+
+  // execução do BD / EM vez de colocar os valores, coloca-se a ? pra ficar dinâmico e depois envia pra const entre []
+  let SQL = 'INSERT INTO produtos (name, cost, category) VALUES (?,?,?)';
+
+  db.query(SQL, [name, cost, category ], (err, result) => {
+    console.log(err);
+  });
+});
+
+app.get("/getCards", (req, res) => {
+  let SQL = "SELECT * from produtos";
+
+  // envia o SQL
+  db.query(SQL, (err, result) => {
+    if (err) console.log(err);
+    else res.send(result);
+  })
 })
 
 app.listen(port, () => console.log(`Rodando server na porta ${port}!`));
