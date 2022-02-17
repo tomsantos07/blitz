@@ -22,8 +22,15 @@ function App() {
       name: values.name,
       cost: values.cost,
       category: values.category,
-    }).then((response) => {
-      console.log(response);
+    }).then(() => {
+      setListProducts([
+        ...listProducts,
+        {
+          name: values.name,
+          cost: values.cost,
+          category: values.category,
+        }
+      ])
     });
   }
 
@@ -79,7 +86,16 @@ function App() {
      {/* Só quando o useEffect carregar */}
      {typeof listProducts !== "undefined" &&
       listProducts.map((value) => {
-       return <Card></Card>
+       return <Card
+        key={ value.id }
+        listCard={ listProducts }
+        setListCard ={ setListProducts }
+        id={ value.idproducts }
+        name={ value.name }
+        cost={ value.cost }
+        category={ value.category }
+
+        ></Card>
      })}
     </div>
   );
